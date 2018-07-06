@@ -136,3 +136,5 @@
     }
   }
 </style>
+
+"vue-particles": "^1.0.9",
