@@ -1,0 +1,122 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    td {
+      width: 200px;
+    }
+    .container {
+      width: 60px;
+      height: 5px;
+      float: left;
+    }
+    .data1 {
+      height: 8px;
+      background: red;
+    }
+
+    .data2 {
+      height: 8px;
+      background:yellow;
+    }
+
+    .data3 {
+      height: 8px;
+      background: blue;
+    }
+  </style>
+</head>
+<body>
+  <table id='table'>
+  </table>
+</body>
+
+  <script>
+
+  var DONT_ENUM =  "propertyIsEnumerable,isPrototypeOf,hasOwnProperty,toLocaleString,toString,valueOf,constructor".split(","),
+    hasOwn = ({}).hasOwnProperty;
+    for (var i in {
+        toString: 1
+    }){
+        DONT_ENUM = false;
+    }
+ 
+ 
+    Object.keys = Object.keys || function(obj){//ecma262v5 15.2.3.14
+            var result = [];
+            for(var key in obj ) if(hasOwn.call(obj,key)){
+                result.push(key) ;
+            }
+            if(DONT_ENUM && obj){
+                for(var i = 0 ;key = DONT_ENUM[i++]; ){
+                    if(hasOwn.call(obj,key)){
+                        result.push(key);
+                    }
+                }
+            }
+            return result;
+        };
+
+    var datas = {
+      '资信项': [11111,22222,1234],
+      '工行': [22222,11111,4321],
+      '招行': [33333,33333,2341]
+    }
+
+    function toPercent(num) {
+      return (num*100).toFixed(2)+'%'
+    }
+
+    function render(data){
+      var dataLength = Object.keys(data).length;
+      var keyLength = data.length;
+      alert(keyLength);
+      var elements = '';
+      var max1=0;
+      var max2=0;
+      var max3=0;
+      for (var j = 0; j<dataLength; j++){
+        if(data[Object.keys(data)[j]][0]>max1) {
+          max1 = data[Object.keys(data)[j]][0];
+        }
+        if(data[Object.keys(data)[j]][1] > max2) {
+          max2 = data[Object.keys(data)[j]][1];
+        }
+        if(data[Object.keys(data)[j]][2] > max3) {
+          max3 = data[Object.keys(data)[j]][2];
+        }
+      }
+      var tableName ='<tr> <td><div> 一二 </div></td> <td><div> 一二 </div></td> <td><div> 一二 </div></td>  <tr>';
+      for (var i = 0; i<dataLength; i++){
+        elements += 
+          '<tr>'+
+          '<td class="td1"><div class="container"><div class="data1" style="width:'+toPercent(data[Object.keys(data)[i]][0]/max1)+'"></div></div><span>'+data[Object.keys(data)[i]][0]+'</span></td>'+
+          '<td class="td2"><div class="container"><div class="data2" style="width:'+toPercent(data[Object.keys(data)[i]][1]/max2)+'"></div></div><span>'+data[Object.keys(data)[i]][1]+'</span></td>'+
+          '<td class="td3"><div class="container"><div class="data3" style="width:'+toPercent(data[Object.keys(data)[i]][2]/max3)+'"></div></div><span>'+data[Object.keys(data)[i]][2]+'</span></td>'+
+          '</tr>'
+      }
+      var table = document.getElementById('table');
+      setTableInnerHTML(table,tableName+elements); 
+
+    function setTableInnerHTML(table, html) { 
+      if(navigator && navigator.userAgent.match(/msie/i)){ 
+      var temp = table.ownerDocument.createElement('div'); 
+      temp.innerHTML = '<table><tbody>' + html + '</tbody></table>'; 
+      if(table.tBodies.length == 0){ 
+      var tbody=document.createElement("tbody"); 
+     table.appendChild(tbody); 
+     } 
+      table.replaceChild(temp.firstChild.firstChild, table.tBodies[0]); 
+     } else { 
+      table.innerHTML=html; 
+     } 
+    } 
+  }
+          render(datas);
+
+  </script>
+
+</html>
